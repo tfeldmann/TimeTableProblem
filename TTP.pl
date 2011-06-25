@@ -77,5 +77,7 @@ test(X) :-
 		curriculum('Klasse 2', ['Mathe', 2, 'Informatik', 1, 'Musik', 1, 'Deutsch', 1]),
 		
 		raumsperre('Musiksaal', ['Dienstag', 'von 8 bis 9']),
-		raumsperre('Raum 2', ['Dienstag', 'von 9 bis 10'])
+		raumsperre('Raum 2', ['Dienstag', 'von 9 bis 10']),
+		
+		lehrersperre('Tewes', ['Montag', 'von 8 bis 9'])
 		], X).

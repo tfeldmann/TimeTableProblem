@@ -8,10 +8,7 @@
 */
 
 /*	
-	- lehrersperre(l,[t1,s1,t2,s2,...])
-	deklariert den Lehrer l als nicht verfügbar
-	für die angegebenen Zeiten, wobei
-	ti sind Tag- und si Stundenbezeichnungen
+
 	
 	- doppelstunden([f1,f2,...])
 	deklariert, dass der Unterricht in Fach f immer nur in Doppelstunden stattfinden
@@ -29,6 +26,7 @@
 :- dynamic(teacherForCourse/2).
 :- dynamic(courseInRoom/2).
 :- dynamic(roomClosed/3).
+:- dynamic(teacherLock/3).
 
 % parseTTP (+TTP, -DayAtoms, -HourAtoms, -ClassAtoms, -CourseAtoms, -TeacherAtoms, -RoomAtoms)
 % --------------------------------------------------------------------------------------------
@@ -51,7 +49,8 @@ parseTTP(TTP, DayAtoms, HourAtoms, ClassAtoms, CourseAtoms, TeacherAtoms, RoomAt
 	assertCourseDurationsForClasses(TTP),
 	assertTeachersForClasses(TTP),
 	assertCourseInRoom(TTP),
-	assertClosedRooms(TTP).
+	assertClosedRooms(TTP),
+	assertTeacherLock(TTP).
 
 
 % subroutines used in parseTTP/7
@@ -185,3 +184,35 @@ assertClosedRooms(Room, [Day, Hour | RestOfTime]) :-
 	
 	asserta(roomClosed(RoomId, DayId, HourId)),
 	assertClosedRooms(Room, RestOfTime).
+
+
+% assertTeacherLock (+TTP)
+%
+%	- lehrersperre(l,[t1,s1,t2,s2,...])
+%		deklariert den Lehrer l als nicht verfügbar
+%		für die angegebenen Zeiten, wobei
+%		t_n sind Tag- und s_n Stundenbezeichnungen
+% --------------------------------------------------
+assertTeacherLock([]).
+assertTeacherLock([lehrersperre(Teacher, ListOfDayAndTime) | RestOfTTP]) :-
+	assertTeacherLock(Teacher, ListOfDayAndTime),
+	assertTeacherLock(RestOfTTP).
+assertTeacherLock([_ | RestOfTTP]) :-
+	assertTeacherLock(RestOfTTP).
+	
+assertTeacherLock(_, []).
+assertTeacherLock(Teacher, [Day, Hour | RestOfTime]) :-
+	teacherAtoms(TeacherAtoms),
+	dayAtoms(DayAtoms),
+	hourAtoms(HourAtoms),
+	nth(TeacherId, TeacherAtoms, Teacher),
+	nth(DayId, DayAtoms, Day),
+	nth(HourId, HourAtoms, Hour),
+	
+	asserta(teacherLock(TeacherId, DayId, HourId)),
+	assertTeacherLock(Teacher, RestOfTime).
+	
+	
+	
+	
+	
