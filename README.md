@@ -1,4 +1,4 @@
-=== Timetable Problem
+# Timetable Problem
 
 flr(1..11, 1..9, 1..7) (Raum Fach
 symbol 0: Leer (alle Leer)
