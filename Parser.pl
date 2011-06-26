@@ -215,8 +215,8 @@ assertTeacherLock(Teacher, [Day, Hour | RestOfTime]) :-
 % --------------------------------------------------------------------------------------
 assertDoublePeriods([]).
 assertDoublePeriods([doppelstunden(ListOfDoublePeriods) | RestOfTTP]) :-
-	write('ASDAA!'),
-	asserta(doublePeriods(ListOfDoublePeriods)),
+	translateCourse(ListOfDoublePeriods, ListOfDoublePeriodsIds),
+	asserta(doublePeriods(ListOfDoublePeriodsIds)),
 	assertDoublePeriods(RestOfTTP).
 assertDoublePeriods([_ | RestOfTTP]) :-
 	assertDoublePeriods(RestOfTTP).
