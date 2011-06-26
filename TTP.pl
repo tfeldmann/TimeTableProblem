@@ -79,5 +79,7 @@ test(X) :-
 		raumsperre('Musiksaal', ['Dienstag', 'von 8 bis 9']),
 		raumsperre('Raum 2', ['Dienstag', 'von 9 bis 10']),
 		
-		lehrersperre('Tewes', ['Montag', 'von 8 bis 9'])
+		lehrersperre('Tewes', ['Montag', 'von 8 bis 9']),
+		
+		doppelstunden(['Sport', 'Informatik'])
 		], X).

@@ -7,14 +7,6 @@
 		- mehrere Fachlehrer resultieren in einer zusammengeführten Menge
 */
 
-/*	
-
-	
-	- doppelstunden([f1,f2,...])
-	deklariert, dass der Unterricht in Fach f immer nur in Doppelstunden stattfinden
-	darf (z.B. bei Sport),wobei f_n Fachbezeichnungen sind.
-*/
-
 :- dynamic(dayAtoms/1).
 :- dynamic(hourAtoms/1).
 :- dynamic(classAtoms/1).
@@ -27,6 +19,7 @@
 :- dynamic(courseInRoom/2).
 :- dynamic(roomClosed/3).
 :- dynamic(teacherLock/3).
+:- dynamic(doublePeriods/1).
 
 % parseTTP (+TTP, -DayAtoms, -HourAtoms, -ClassAtoms, -CourseAtoms, -TeacherAtoms, -RoomAtoms)
 % --------------------------------------------------------------------------------------------
@@ -50,7 +43,8 @@ parseTTP(TTP, DayAtoms, HourAtoms, ClassAtoms, CourseAtoms, TeacherAtoms, RoomAt
 	assertTeachersForClasses(TTP),
 	assertCourseInRoom(TTP),
 	assertClosedRooms(TTP),
-	assertTeacherLock(TTP).
+	assertTeacherLock(TTP),
+	assertDoublePeriods(TTP).
 
 
 % subroutines used in parseTTP/7
@@ -213,6 +207,18 @@ assertTeacherLock(Teacher, [Day, Hour | RestOfTime]) :-
 	assertTeacherLock(Teacher, RestOfTime).
 	
 	
-	
+% assertDoublePeriods (+TTP)
+%
+%	- doppelstunden([f1,f2,...])
+%		deklariert, dass der Unterricht in Fach f immer nur in Doppelstunden stattfinden
+%		darf (z.B. bei Sport), wobei f_n Fachbezeichnungen sind.
+% --------------------------------------------------------------------------------------
+assertDoublePeriods([]).
+assertDoublePeriods([doppelstunden(ListOfDoublePeriods) | RestOfTTP]) :-
+	write('ASDAA!'),
+	asserta(doublePeriods(ListOfDoublePeriods)),
+	assertDoublePeriods(RestOfTTP).
+assertDoublePeriods([_ | RestOfTTP]) :-
+	assertDoublePeriods(RestOfTTP).
 	
 	

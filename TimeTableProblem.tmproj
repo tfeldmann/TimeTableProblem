@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>TTP.pl</string>
+	<string>Constraints.pl</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -40,14 +40,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>49</integer>
+				<integer>18</integer>
 				<key>line</key>
-				<integer>124</integer>
+				<integer>51</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>91</integer>
+			<integer>48</integer>
 		</dict>
 		<key>GridGeneration.pl</key>
 		<dict>
@@ -62,20 +62,6 @@
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
-		</dict>
-		<key>Parser.pl</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>26</integer>
-				<key>line</key>
-				<integer>212</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>20</integer>
 		</dict>
 		<key>README.md</key>
 		<dict>
@@ -119,20 +105,6 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>TTP.pl</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>14</integer>
-				<key>line</key>
-				<integer>47</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>43</integer>
-		</dict>
 		<key>WriteHTML.pl</key>
 		<dict>
 			<key>caret</key>
@@ -164,8 +136,6 @@
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>TTP.pl</string>
-		<string>Parser.pl</string>
 		<string>Constraints.pl</string>
 		<string>GridGeneration.pl</string>
 		<string>CommonFunctions.pl</string>
