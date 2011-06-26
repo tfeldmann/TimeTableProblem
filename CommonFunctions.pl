@@ -58,6 +58,34 @@ translateCourse([Course | RestOfCourses], ListOfCourseIds) :-
 translateCourse(Course, CourseId) :-
 	courseAtoms(CourseAtoms),
 	nth(CourseId, CourseAtoms, Course).
+
+
+% translateTeacher (+ListOfTeacher, -ListOfTeacherIds)
+% translateTeacher (+Teacher, -TeacherId)
+% -------------------------------------------------
+translateTeacher([], _).
+translateTeacher([Teacher | RestOfTeachers], ListOfTeacherIds) :-
+	translateTeacher(RestOfTeachers, RestListOfTeacherIds),
+	teacherAtoms(TeacherAtoms),
+	nth(TeacherId, TeacherAtoms, Teacher), !,
+	append(RestListOfTeacherIds, [TeacherId], ListOfTeacherIds).
+translateTeacher(Teacher, TeacherId) :-
+	teacherAtoms(TeacherAtoms),
+	nth(TeacherId, TeacherAtoms, Teacher).	
+
+	
+% translateRoom (+ListOfRoom, -ListOfRoomIds)
+% translateRoom (+Room, -RoomId)
+% -------------------------------------------------
+translateRoom([], _).
+translateRoom([Room | RestOfRooms], ListOfRoomIds) :-
+	translateRoom(RestOfRooms, RestListOfRoomIds),
+	roomAtoms(RoomAtoms),
+	nth(RoomId, RoomAtoms, Room), !,
+	append(RestListOfRoomIds, [RoomId], ListOfRoomIds).
+translateRoom(Room, RoomId) :-
+	roomAtoms(RoomAtoms),
+	nth(RoomId, RoomAtoms, Room).
 	
 	
 % selectVars (+ListOfFLR, -ListOfVars)
