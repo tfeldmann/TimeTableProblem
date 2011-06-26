@@ -46,6 +46,16 @@ listOfR([flr(_, _, R) | RestOfFLR], ListOfR) :-
 	append(RestListOfR, [R], ListOfR).
 	
 	
+% translateCourse (+ListOfCourse, -ListOfCourseIds)
+% -------------------------------------------------
+translateCourse([], _).
+translateCourse([Course | RestOfCourses], ListOfCourseIds) :-
+	translateCourse(RestOfCourses, RestListOfCourseIds),
+	courseAtoms(CourseAtoms),
+	nth(CourseId, CourseAtoms, Course), !,
+	append(RestListOfCourseIds, [CourseId], ListOfCourseIds).
+	
+	
 % selectVars (+ListOfFLR, -ListOfVars)
 % ------------------------------------
 selectAllVars([], _).
