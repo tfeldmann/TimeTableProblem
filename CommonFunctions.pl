@@ -1,6 +1,10 @@
 /*
 	CommonFunctions.pl
+	
+	Testgrid:
+	Grid = [[[a1,a2,a3],[b1,b2,b3],[c1,c2,c3]], [[d1,d2,d3],[e1,e2,e3],[f1,f2,f3]], [[f1,f2,f3],[g1,g2,g3],[h1,h2,h3]]]
 */
+
 
 % union (+List1, +List2, -UnionOfList1AndList2)
 % ---------------------------------------------
