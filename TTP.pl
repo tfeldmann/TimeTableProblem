@@ -84,19 +84,31 @@ meyer :-
 		fachlehrer(informatik,[meyer]),
 		fachlehrer(mathe,[schneider]),
 		fachlehrer(sachkunde,[schneider]),
-		doppelstunden([sport,schwimmen,kunst])
-/* TODO:
-		Außerdem:
-		Herr Müller kann nur Montags bis Donnerstags,
-		die Schwimmhalle steht nur Dienstags zur Verfügung,
-		Herr Schmidt kann nur Montags und Dienstags,
-		Frau Schulze kann nur Donnerstags und Freitags,
-		Herr Meyer kann nur Mittwochs bis Freitags
-		... war zu bequem, das alles als lehrersperre bzw. raumsperre zu formulieren ;-)
+		doppelstunden([sport,schwimmen,kunst]),
 		
-		Dafür braucht aber die Regel des Ministeriums (letzte/erste Stunde) nicht eingehalten werden!
-*/
-		]).
+		% Herr Müller kann nur Montags bis Donnerstags
+		lehrersperre(mueller, 		[freitag, vielzufrueh, freitag, zufrueh, freitag, frueh, freitag, vormittags, freitag, mittags, freitag, spaet]),
+		
+		% die Schwimmhalle steht nur Dienstags zur Verfügung
+		raumsperre(schwimmhalle,	[montag, vielzufrueh, montag, zufrueh, montag, frueh, montag, vormittags, montag, mittags, montag, spaet,
+									mittwoch, vielzufrueh, mittwoch, zufrueh, mittwoch, frueh, mittwoch, vormittags, mittwoch, mittags, mittwoch, spaet,
+									donnerstag, vielzufrueh, donnerstag, zufrueh, donnerstag, frueh, donnerstag, vormittags, donnerstag, mittags, donnerstag, spaet,
+									freitag, vielzufrueh, freitag, zufrueh, freitag, frueh, freitag, vormittags, freitag, mittags, freitag, spaet]),
+									
+		% Herr Schmidt kann nur Montags und Dienstags		
+		lehrersperre(schmidt,		[mittwoch, vielzufrueh, mittwoch, zufrueh, mittwoch, frueh, mittwoch, vormittags, mittwoch, mittags, mittwoch, spaet,
+									donnerstag, vielzufrueh, donnerstag, zufrueh, donnerstag, frueh, donnerstag, vormittags, donnerstag, mittags, donnerstag, spaet,
+								    freitag, vielzufrueh, freitag, zufrueh, freitag, frueh, freitag, vormittags, freitag, mittags, freitag, spaet]),
+								
+		% Frau Schulze kann nur Donnerstags und Freitags
+		lehrersperre(schulze,		[montag, vielzufrueh, montag, zufrueh, montag, frueh, montag, vormittags, montag, mittags, montag, spaet,
+									dienstag, vielzufrueh, dienstag, zufrueh, dienstag, frueh, dienstag, vormittags, dienstag, mittags, dienstag, spaet,
+									mittwoch, vielzufrueh, mittwoch, zufrueh, mittwoch, frueh, mittwoch, vormittags, mittwoch, mittags, mittwoch, spaet]),
+									
+		% Herr Meyer kann nur Mittwochs bis Freitags
+		lehrersperre(meyer,			[montag, vielzufrueh, montag, zufrueh, montag, frueh, montag, vormittags, montag, mittags, montag, spaet,
+									dienstag, vielzufrueh, dienstag, zufrueh, dienstag, frueh, dienstag, vormittags, dienstag, mittags, dienstag, spaet])
+		], _).
 
 
 
