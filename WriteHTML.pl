@@ -42,7 +42,7 @@ writeTable(Grid, Class) :-
 	write('\n\t<th><span class="class">'),
 	write(Class),
 	write('</span></th>'),
-	forall((dayAtoms(DayAtoms), member(Day, DayAtoms)), (write('\n\t<th>'), write(Day), write('</th>'))), !,
+	forall((dayAtoms(DayAtoms), member(Day, DayAtoms)), (write('\n\t<th>'), write(Day), write('</th>'))),
 	write('\n</tr>'),
 	
 	% Entries
