@@ -66,9 +66,10 @@ dontShareRoomsAndTeachers(_, []).
 dontShareRoomsAndTeachers(Grid, [[Day, Hour] | RestOfCombinations]) :-
 	selectSingleFLR(Grid, 1, Day, Hour, flr(_, L1, R1)),
 	selectSingleFLR(Grid, 2, Day, Hour, flr(_, L2, R2)),
+	selectSingleFLR(Grid, 3, Day, Hour, flr(_, L3, R3)),
 	
-	differentOrBothZero([[R1, R2]]),
-	differentOrBothZero([[L1, L2]]),
+	differentOrBothZero([[R1, R2], [R1, R3], [R2, R3]]),
+	differentOrBothZero([[L1, L2], [L1, L3], [L2, L3]]),
 	dontShareRoomsAndTeachers(Grid, RestOfCombinations).
 
 differentOrBothZero([]).
@@ -113,19 +114,23 @@ roomForCourse([flr(F, _, R) | RestOfFLR]) :-
 	roomForCourse(RestOfFLR).
 	
 
-% rooms can be closed at certain times
-% ------------------------------------
-% FIXME: 2 Klassen hardcoding flexibel machen
+% rooms is closed at certain times
+% --------------------------------
+
 closedRooms(Grid) :-
 	findall([Room, Day, Hour], roomClosed(Room, Day, Hour), ClosedRoomsList),
 	closedRooms(Grid, ClosedRoomsList).
 
 closedRooms(_, []).
 closedRooms(Grid, [[Room, Day, Hour] | RestOfClosedRooms]) :-
+% FIXME: 2 Klassen hardcoding flexibel machen
 	selectSingleFLR(Grid, 1, Day, Hour, flr(_, _, R1)),
 	selectSingleFLR(Grid, 2, Day, Hour, flr(_, _, R2)),
+	selectSingleFLR(Grid, 3, Day, Hour, flr(_, _, R3)),
+	
 	R1 #\= Room,
 	R2 #\= Room,
+	R3 #\= Room,
 	closedRooms(Grid, RestOfClosedRooms).
 	
 	
