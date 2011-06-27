@@ -10,23 +10,25 @@
 constrainGrid(Grid) :-
 
 	% A room can be empty or have a course in it
-	write(':: A room can be empty or have a course in it'),nl,
+	write('\t- A room can be empty or have a course in it'),nl,
 	voidVoidVoidConstraint(Grid),
 	
 	% teachers can only teach certain courses and courses can only be taught in certain rooms
-	write(':: teachers can only teach certain courses and courses can only be taught in certain rooms'),nl,
+	write('\t- teachers can only teach certain courses and courses can only be taught in certain rooms'),nl,
 	roomAndTeacherForCourse(Grid),
 	
 	% A class has to spend a certain amount of hours on each course
-	write(':: A class has to spend a certain amount of hours on each course'),nl,
+	write('\t- A class has to spend a certain amount of hours on each course'),nl,
 	timeForCourse(Grid),
 	
 	% rooms can be closed at certain times
-	write(':: rooms can be closed at certain times'),nl,
+	write('\t- rooms can be closed at certain times'),nl,
 	closedRooms(Grid),
+	
+	teacherLocks(Grid),
    
    	% Classes cannot share rooms and teachers
-	write(':: Classes cannot share rooms and teachers'),nl,
+	write('\t- Classes cannot share rooms and teachers'),nl,
 	dontShareRoomsAndTeachers(Grid),
 	
 	nl.
@@ -143,9 +145,24 @@ closedRooms(Grid, [[Room, Day, Hour] | RestOfClosedRooms]) :-
 % FIXME: 2 Klassen hardcoding flexibel machen
 	selectSingleFLR(Grid, 1, Day, Hour, flr(_, _, R1)),
 	selectSingleFLR(Grid, 2, Day, Hour, flr(_, _, R2)),
-	
 	R1 #\= Room,
 	R2 #\= Room,
 	closedRooms(Grid, RestOfClosedRooms).
+	
+	
+% teacher is unavailable at Day:Hour
+% ----------------------------------
+teacherLocks(Grid) :-
+	findall([Teacher, Day, Hour], teacherLock(Teacher, Day, Hour), LockedTeacherList),
+	teacherLocks(Grid, LockedTeacherList).
+
+teacherLocks(_, []).
+teacherLocks(Grid, [[Teacher, Day, Hour] | RestOfLockedTeacherList]) :-
+% FIXME: 2 Klassen hardcoding flexibel machen
+	selectSingleFLR(Grid, 1, Day, Hour, flr(_, L1, _)),
+	selectSingleFLR(Grid, 2, Day, Hour, flr(_, L2, _)),
+	L1 #\= Teacher,
+	L2 #\= Teacher,
+	closedRooms(Grid, RestOfLockedTeacherList).
 	
 	
