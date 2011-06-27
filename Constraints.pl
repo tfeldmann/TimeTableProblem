@@ -11,18 +11,24 @@ constrainGrid(Grid) :-
 
 	% A room can be empty or have a course in it
 	voidVoidVoidConstraint(Grid),
-   
-   	% Classes cannot share rooms and teachers
-	dontShareRoomsAndTeachers(Grid),
-   
+	
 	% teachers can only teach certain courses and courses can only be taught in certain rooms
 	roomAndTeacherForCourse(Grid),
 	
-	% rooms can be closed at certain times
-	closedRooms(Grid),
-	
 	% A class has to spend a certain amount of hours on each course
-	timeForCourse(Grid).
+	timeForCourse(Grid),
+	
+	% rooms can be closed at certain times
+	closedRooms(Grid).
+   
+   	% Classes cannot share rooms and teachers
+%	dontShareRoomsAndTeachers(Grid),
+   
+
+	
+
+	
+
 
 
 % constraintWithLog (+Constraint)
@@ -66,10 +72,9 @@ dontShareRoomsAndTeachers(_, []).
 dontShareRoomsAndTeachers(Grid, [[Day, Hour] | RestOfCombinations]) :-
 	selectSingleFLR(Grid, 1, Day, Hour, flr(_, L1, R1)),
 	selectSingleFLR(Grid, 2, Day, Hour, flr(_, L2, R2)),
-	selectSingleFLR(Grid, 3, Day, Hour, flr(_, L3, R3)),
 	
-	differentOrBothZero([[R1, R2], [R1, R3], [R2, R3]]),
-	differentOrBothZero([[L1, L2], [L1, L3], [L2, L3]]),
+	differentOrBothZero([[R1, R2]]),
+	differentOrBothZero([[L1, L2]]),
 	dontShareRoomsAndTeachers(Grid, RestOfCombinations).
 
 differentOrBothZero([]).
@@ -81,15 +86,24 @@ differentOrBothZero([[V1, V2] | RestOfPairs]) :-
 % A class has to spend a certain amount of hours on each course
 % -------------------------------------------------------------
 timeForCourse(Grid) :-
-	findall([ClassId, CourseId, Hours], hoursForCourse(ClassId, CourseId, Hours), HoursForCourse),
-	timeForCourse(Grid, HoursForCourse).
-
+	classAtoms(ClassAtoms),
+	translateClass(ClassAtoms, ClassIds),
+	timeForCourse(Grid, ClassIds).
+	
 timeForCourse(_, []).
-timeForCourse(Grid, [[ClassId, CourseId, Hours]|T]) :-
+timeForCourse(Grid, [ClassId | RestOfClassId]) :-
 	selectFLR(Grid, ClassId, _, _, FLR),
 	listOfF(FLR, AllF),
+	
+	findall([CourseId, Hours], hoursForCourse(ClassId, CourseId, Hours), HoursForCourse),
+	timeForCourse_apply(AllF, HoursForCourse),
+	
+	timeForCourse(Grid, RestOfClassId).
+	
+timeForCourse_apply(_, []).
+timeForCourse_apply(AllF, [[CourseId, Hours] | RestOfHoursForCourse]) :-
 	fd_exactly(Hours, AllF, CourseId),
-	timeForCourse(Grid, T).
+	timeForCourse_apply(AllF, RestOfHoursForCourse).
 
 
 % teachers can only teach certain courses and courses can only be taught in certain rooms
@@ -125,11 +139,9 @@ closedRooms(Grid, [[Room, Day, Hour] | RestOfClosedRooms]) :-
 % FIXME: 2 Klassen hardcoding flexibel machen
 	selectSingleFLR(Grid, 1, Day, Hour, flr(_, _, R1)),
 	selectSingleFLR(Grid, 2, Day, Hour, flr(_, _, R2)),
-	selectSingleFLR(Grid, 3, Day, Hour, flr(_, _, R3)),
 	
 	R1 #\= Room,
 	R2 #\= Room,
-	R3 #\= Room,
 	closedRooms(Grid, RestOfClosedRooms).
 	
 	
