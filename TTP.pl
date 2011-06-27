@@ -31,20 +31,17 @@ ttp(TTP, Stundenplan) :-
 	% Generate the Gritd (filled with anonymous variables)
 	write('- Grid wird generiert.'), nl,
 	generateGridWithDomains(DayAtoms, HourAtoms, ClassAtoms, CourseAtoms, TeacherAtoms, RoomAtoms, Grid),
-	!,
 	
 	% Constrain the grid to meet the expectations of the TTP
 	write('- Stundenplan wird eingeschränkt.'), nl,
 	constrainGrid(Grid),
-	!,
 	
 	% Generate a solution
 	write(' - Problem wird gelöst'),
 	selectFLR(Grid, _, _, _, AllFLR),
-	selectAllVars(AllFLR, AllVars),
-	!,
+	selectAllVars(AllFLR, AllVars), !,
 	
-%	fd_labeling(AllVars, [variable_method(ff), backtracks(Backtracks)]),
+	fd_labeling(AllVars, [variable_method(ff), backtracks(Backtracks)]),
 	
 	nl,nl,
 	write('Anzahl der Backtracks: '), write(Backtracks),
@@ -140,9 +137,7 @@ test(X) :-
 		fachlehrer('Sport', ['Mersch-Hebing']),
 
 		curriculum('Klasse 1', ['Mathe', 2, 'Informatik', 1, 'Musik', 2, 'Deutsch', 1, 'Sport', 1]),
-
 		curriculum('Klasse 2', ['Mathe', 2, 'Informatik', 1, 'Musik', 1, 'Deutsch', 1]),
-		curriculum('Klasse 3', ['Mathe', 2]),
 		
 		raumsperre('Musiksaal', ['Dienstag', 'von 8 bis 9']),
 		raumsperre('Raum 2', ['Dienstag', 'von 9 bis 10']),
