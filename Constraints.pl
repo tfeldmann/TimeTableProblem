@@ -2,7 +2,7 @@
 	Constraints.pl
 
 	FIXME: Fach ohne Raumeinschränkungen: Kann in jedem Raum stattfinden
-	
+	Ich sag irgendwas.
 */
 
 % constrainGrid (+Grid)
