@@ -52,9 +52,9 @@ ttp(TTP, Stundenplan) :-
 	writeHTML(Grid),
 	
 	nl, nl,
-	write(Grid).
+	write(Grid),
 
-%	scheduleEntries(Grid, ClassAtoms, DayAtoms, HourAtoms, CourseAtoms, TeacherAtoms, RoomAtoms, Stundenplan).
+	scheduleEntries(Grid, ClassAtoms, DayAtoms, HourAtoms, CourseAtoms, TeacherAtoms, RoomAtoms, Stundenplan).
 
 
 % Musterproblem
@@ -142,7 +142,8 @@ test(X) :-
 		raumsperre('Musiksaal', ['Dienstag', 'von 8 bis 9']),
 		raumsperre('Raum 2', ['Dienstag', 'von 9 bis 10']),
 		
-		lehrersperre('Tewes', ['Dienstag', 'von 8 bis 9']),
+		lehrersperre('Tewes', ['Dienstag', 'von 8 bis 9'])
 		
-		doppelstunden(['Sport', 'Informatik'])
+		% TODO: Doppelstunden implementieren
+%		doppelstunden(['Sport', 'Informatik'])
 		], X).
