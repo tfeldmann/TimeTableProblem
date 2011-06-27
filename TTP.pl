@@ -17,8 +17,9 @@
 ttp(TTP, Stundenplan) :-
 
 	% Parse and apply constraints
-	parseTTP(TTP, DayAtoms, HourAtoms, ClassAtoms, CourseAtoms, TeacherAtoms, RoomAtoms),
-	
+	write('- Deklaration wird eingelesen.'), nl,
+	parseTTP(TTP, DayAtoms, HourAtoms, ClassAtoms, CourseAtoms, TeacherAtoms, RoomAtoms),	
+
 	nl,
 	write('Tage:\t\t'), 	write(DayAtoms), nl,
 	write('Stunden:\t'), 	write(HourAtoms), nl,
@@ -26,27 +27,32 @@ ttp(TTP, Stundenplan) :-
 	write('Lehrer:\t\t'),	write(TeacherAtoms), nl,
 	write('Räume:\t\t'),	write(RoomAtoms), nl,
 	nl,
-	write('- Deklaration wurde eingelesen.'), nl,
-	
+
 	% Generate the Gritd (filled with anonymous variables)
+	write('- Grid wird generiert.'), nl,
 	generateGridWithDomains(DayAtoms, HourAtoms, ClassAtoms, CourseAtoms, TeacherAtoms, RoomAtoms, Grid),
-	write('- Grid wurde generiert.'), nl,
+	!,
 	
 	% Constrain the grid to meet the expectations of the TTP
+	write('- Stundenplan wird eingeschränkt.'), nl,
 	constrainGrid(Grid),
-	write('- Stundenplan wurde eingeschränkt.'),
+	!,
 	
 	% Generate a solution
+	write(' - Problem wird gelöst'),
 	selectFLR(Grid, _, _, _, AllFLR),
 	selectAllVars(AllFLR, AllVars),
-	fd_labeling(AllVars, [variable_method(ff), backtracks(B)]),
+	!,
+	
+%	fd_labeling(AllVars, [variable_method(ff), backtracks(Backtracks)]),
 	
 	nl,nl,
-	write(' - Anzahl der Backtracks: '), write(B),
+	write('Anzahl der Backtracks: '), write(Backtracks),
 	nl,nl,
 	
+	% Stundenplan.html erstellen.
+	write(' - Stundenplan.html wird erstellt.'),
 	writeHTML(Grid),
-	write(' - Stundenplan wurde erstellt.'),
 	
 	nl, nl,
 	write(Grid).
@@ -56,69 +62,72 @@ ttp(TTP, Stundenplan) :-
 
 % Musterproblem
 % -------------
-meyer :-
+meyer(X) :-
 	ttp(
 		[
-		tage([montag,dienstag,mittwoch,donnerstag,freitag]),
-		stunden([vielzufrueh,zufrueh,frueh,vormittags,mittags,spaet]),
-		curriculum(klasse1,[deutsch,5,mathe,5,sachkunde,2,sport,2,schwimmen,2,musik,2,kunst,2,religion,2,englisch,1,informatik,2]),
-		curriculum(klasse2,[deutsch,6,mathe,5,sachkunde,2,sport,2,schwimmen,2,musik,1,kunst,2,religion,2,englisch,2,informatik,2]),
-		curriculum(klasse3,[deutsch,5,mathe,5,sachkunde,4,sport,2,schwimmen,2,musik,1,kunst,2,religion,2,englisch,2,informatik,4]),
-		fachraum(kunst,[kunstraum]),
-		fachraum(musik,[musikraum]),
-		fachraum(sport,[sporthalle]),
-		fachraum(schwimmen,[schwimmhalle]),
-		fachraum(deutsch,[raum1,raum2,raum3]),
-		fachraum(englisch,[raum1,raum2,raum3]),
-		fachraum(mathe,[raum1,raum2,raum3]),
-		fachraum(religion,[raum1,raum2,raum3]),
-		fachraum(sachkunde,[labor]),
-		fachraum(informatik,[pcraum]),
-		fachlehrer(kunst,[schulze]),
-		fachlehrer(musik,[schulze]),
-		fachlehrer(deutsch,[mueller]),
-		fachlehrer(religion,[mueller]),
-		fachlehrer(sport,[schmidt]),
-		fachlehrer(schwimmen,[schmidt]),
-		fachlehrer(englisch,[meyer]),
-		fachlehrer(informatik,[meyer]),
-		fachlehrer(mathe,[schneider]),
-		fachlehrer(sachkunde,[schneider]),
-		doppelstunden([sport,schwimmen,kunst]),
+			tage(['Montag', 'Dienstag', 'Mittwoch','Donnerstag', 'Freitag']),
+			stunden(['von 8 bis 9', 'von 9 bis 10', 'von 10 bis 11', 'von 11 bis 12', 'von 12 bis 13']),
 		
-		% Herr Müller kann nur Montags bis Donnerstags
-		lehrersperre(mueller, 		[freitag, vielzufrueh, freitag, zufrueh, freitag, frueh, freitag, vormittags, freitag, mittags, freitag, spaet]),
+			curriculum('Klasse 1',['Deutsch',5,'Mathe',5,'Sachkunde',2,'Sport',2,'Schwimmen',2,'Musik',2,'Kunst',2,'Religion',2,'Englisch',1,'Informatik',2]),
+			curriculum('Klasse 2',['Deutsch',6,'Mathe',5,'Sachkunde',2,'Sport',2,'Schwimmen',2,'Musik',1,'Kunst',2,'Religion',2,'Englisch',2,'Informatik',2]),
+			curriculum('Klasse 3',['Deutsch',5,'Mathe',5,'Sachkunde',4,'Sport',2,'Schwimmen',2,'Musik',1,'Kunst',2,'Religion',2,'Englisch',2,'Informatik',4]),
 		
-		% die Schwimmhalle steht nur Dienstags zur Verfügung
-		raumsperre(schwimmhalle,	[montag, vielzufrueh, montag, zufrueh, montag, frueh, montag, vormittags, montag, mittags, montag, spaet,
-									mittwoch, vielzufrueh, mittwoch, zufrueh, mittwoch, frueh, mittwoch, vormittags, mittwoch, mittags, mittwoch, spaet,
-									donnerstag, vielzufrueh, donnerstag, zufrueh, donnerstag, frueh, donnerstag, vormittags, donnerstag, mittags, donnerstag, spaet,
-									freitag, vielzufrueh, freitag, zufrueh, freitag, frueh, freitag, vormittags, freitag, mittags, freitag, spaet]),
+			fachraum('Kunst',		['Kunstraum']),
+			fachraum('Musik',		['Musikraum']),
+			fachraum('Sport',		['Sporthalle']),
+			fachraum('Schwimmen',	['Schwimmhalle']),
+			fachraum('Deutsch',		['Raum 1','Raum 2','Raum 3']),
+			fachraum('Englisch',	['Raum 1','Raum 2','Raum 3']),
+			fachraum('Mathe',		['Raum 1','Raum 2','Raum 3']),
+			fachraum('Religion',	['Raum 1','Raum 2','Raum 3']),
+			fachraum('Sachkunde',	['Labor']),
+			fachraum('Informatik',	['PC-Pool']),
+		
+			fachlehrer('Kunst',		['Schulze']),
+			fachlehrer('Musik',		['Schulze']),
+			fachlehrer('Deutsch',	['Müller']),
+			fachlehrer('Religion',	['Müller']),
+			fachlehrer('Sport',		['Schmidt']),
+			fachlehrer('Schwimmen',	['Schmidt']),
+			fachlehrer('Englisch',	['Meyer']),
+			fachlehrer('Informatik',['Meyer']),
+			fachlehrer('Mathe',		['Schneider']),
+			fachlehrer('Sachkunde',	['Schneider']),
+		
+			doppelstunden(['Sport','Schwimmen','Kunst']),
+		
+			% Herr Müller kann nur 'Montag's bis 'Donnerstag's
+			lehrersperre('Müller', 		['Freitag', 'von 8 bis 9', 'Freitag', 'von 9 bis 10', 'Freitag', 'von 10 bis 11', 'Freitag', 'von 11 bis 12', 'Freitag', 'von 12 bis 13', 'Freitag', 'von 13 bis 14']),
+		
+			% die Schwimmhalle steht nur 'Dienstag's zur Verfügung
+			raumsperre('Schwimmhalle',	['Montag', 'von 8 bis 9', 'Montag', 'von 9 bis 10', 'Montag', 'von 10 bis 11', 'Montag', 'von 11 bis 12', 'Montag', 'von 12 bis 13', 'Montag', 'von 13 bis 14',
+										'Mittwoch', 'von 8 bis 9', 'Mittwoch', 'von 9 bis 10', 'Mittwoch', 'von 10 bis 11', 'Mittwoch', 'von 11 bis 12', 'Mittwoch', 'von 12 bis 13', 'Mittwoch', 'von 13 bis 14',
+										'Donnerstag', 'von 8 bis 9', 'Donnerstag', 'von 9 bis 10', 'Donnerstag', 'von 10 bis 11', 'Donnerstag', 'von 11 bis 12', 'Donnerstag', 'von 12 bis 13', 'Donnerstag', 'von 13 bis 14',
+										'Freitag', 'von 8 bis 9', 'Freitag', 'von 9 bis 10', 'Freitag', 'von 10 bis 11', 'Freitag', 'von 11 bis 12', 'Freitag', 'von 12 bis 13', 'Freitag', 'von 13 bis 14']),
 									
-		% Herr Schmidt kann nur Montags und Dienstags		
-		lehrersperre(schmidt,		[mittwoch, vielzufrueh, mittwoch, zufrueh, mittwoch, frueh, mittwoch, vormittags, mittwoch, mittags, mittwoch, spaet,
-									donnerstag, vielzufrueh, donnerstag, zufrueh, donnerstag, frueh, donnerstag, vormittags, donnerstag, mittags, donnerstag, spaet,
-								    freitag, vielzufrueh, freitag, zufrueh, freitag, frueh, freitag, vormittags, freitag, mittags, freitag, spaet]),
+			% Herr Schmidt kann nur 'Montag's und 'Dienstag's		
+			lehrersperre('Schmidt',		['Mittwoch', 'von 8 bis 9', 'Mittwoch', 'von 9 bis 10', 'Mittwoch', 'von 10 bis 11', 'Mittwoch', 'von 11 bis 12', 'Mittwoch', 'von 12 bis 13', 'Mittwoch', 'von 13 bis 14',
+										'Donnerstag', 'von 8 bis 9', 'Donnerstag', 'von 9 bis 10', 'Donnerstag', 'von 10 bis 11', 'Donnerstag', 'von 11 bis 12', 'Donnerstag', 'von 12 bis 13', 'Donnerstag', 'von 13 bis 14',
+									    'Freitag', 'von 8 bis 9', 'Freitag', 'von 9 bis 10', 'Freitag', 'von 10 bis 11', 'Freitag', 'von 11 bis 12', 'Freitag', 'von 12 bis 13', 'Freitag', 'von 13 bis 14']),
 								
-		% Frau Schulze kann nur Donnerstags und Freitags
-		lehrersperre(schulze,		[montag, vielzufrueh, montag, zufrueh, montag, frueh, montag, vormittags, montag, mittags, montag, spaet,
-									dienstag, vielzufrueh, dienstag, zufrueh, dienstag, frueh, dienstag, vormittags, dienstag, mittags, dienstag, spaet,
-									mittwoch, vielzufrueh, mittwoch, zufrueh, mittwoch, frueh, mittwoch, vormittags, mittwoch, mittags, mittwoch, spaet]),
+			% Frau Schulze kann nur 'Donnerstag's und 'Freitag's
+			lehrersperre('Schulze',		['Montag', 'von 8 bis 9', 'Montag', 'von 9 bis 10', 'Montag', 'von 10 bis 11', 'Montag', 'von 11 bis 12', 'Montag', 'von 12 bis 13', 'Montag', 'von 13 bis 14',
+										'Dienstag', 'von 8 bis 9', 'Dienstag', 'von 9 bis 10', 'Dienstag', 'von 10 bis 11', 'Dienstag', 'von 11 bis 12', 'Dienstag', 'von 12 bis 13', 'Dienstag', 'von 13 bis 14',
+										'Mittwoch', 'von 8 bis 9', 'Mittwoch', 'von 9 bis 10', 'Mittwoch', 'von 10 bis 11', 'Mittwoch', 'von 11 bis 12', 'Mittwoch', 'von 12 bis 13', 'Mittwoch', 'von 13 bis 14']),
 									
-		% Herr Meyer kann nur Mittwochs bis Freitags
-		lehrersperre(meyer,			[montag, vielzufrueh, montag, zufrueh, montag, frueh, montag, vormittags, montag, mittags, montag, spaet,
-									dienstag, vielzufrueh, dienstag, zufrueh, dienstag, frueh, dienstag, vormittags, dienstag, mittags, dienstag, spaet])
-		], _).
-
+			% Herr Meyer kann nur 'Mittwoch's bis 'Freitag's
+			lehrersperre('Meyer',		['Montag', 'von 8 bis 9', 'Montag', 'von 9 bis 10', 'Montag', 'von 10 bis 11', 'Montag', 'von 11 bis 12', 'Montag', 'von 12 bis 13', 'Montag', 'von 13 bis 14',
+										'Dienstag', 'von 8 bis 9', 'Dienstag', 'von 9 bis 10', 'Dienstag', 'von 10 bis 11', 'Dienstag', 'von 11 bis 12', 'Dienstag', 'von 12 bis 13', 'Dienstag', 'von 13 bis 14'])
+		], X).
 
 % test (-Stundenplan)
 % -------------------
 test(X) :-
 	ttp([
 		tage(['Montag', 'Dienstag', 'Mittwoch']),
-		stunden(['von 8 bis 9', 'von 9 bis 10', 'von 10 bis 11']),
+		stunden(['von 8 bis 9', 'von 9 bis 10', 'von 10 bis 11', 'von 11 bis 12']),
 
-		fachraum('Mathe', ['Raum 1', 'Raum 2', 'Raum 3', 'Raum 4', 'Raum 5', 'Sporthalle', 'PC-Pool']),
+		fachraum('Mathe', ['Raum 1', 'Raum 2', 'Raum 3', 'Sporthalle', 'PC-Pool']),
 		fachraum('Informatik', ['PC-Pool', 'Raum 2']),
 		fachraum('Musik', ['Musiksaal']),
 		fachraum('Deutsch', ['Raum 1', 'Raum 2', 'Raum 3']),
@@ -131,13 +140,14 @@ test(X) :-
 		fachlehrer('Sport', ['Mersch-Hebing']),
 
 		curriculum('Klasse 1', ['Mathe', 2, 'Informatik', 1, 'Musik', 2, 'Deutsch', 1, 'Sport', 1]),
+
 		curriculum('Klasse 2', ['Mathe', 2, 'Informatik', 1, 'Musik', 1, 'Deutsch', 1]),
-%		curriculum('Klasse 3', ['Mathe', 2]),
+		curriculum('Klasse 3', ['Mathe', 2]),
 		
 		raumsperre('Musiksaal', ['Dienstag', 'von 8 bis 9']),
 		raumsperre('Raum 2', ['Dienstag', 'von 9 bis 10']),
 		
-		lehrersperre('Tewes', ['Montag', 'von 8 bis 9']),
+		lehrersperre('Tewes', ['Dienstag', 'von 8 bis 9']),
 		
 		doppelstunden(['Sport', 'Informatik'])
 		], X).
