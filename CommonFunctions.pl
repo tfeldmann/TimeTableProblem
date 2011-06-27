@@ -92,6 +92,20 @@ translateRoom(Room, RoomId) :-
 	nth(RoomId, RoomAtoms, Room).
 	
 	
+% translateClass (+ListOfClass, -ListOfClassIds)
+% translateClass (+Class, -ClassId)
+% -------------------------------------------------
+translateClass([], _).
+translateClass([Class | RestOfClasss], ListOfClassIds) :-
+	translateClass(RestOfClasss, RestListOfClassIds),
+	classAtoms(ClassAtoms),
+	nth(ClassId, ClassAtoms, Class), !,
+	append(RestListOfClassIds, [ClassId], ListOfClassIds).
+translateClass(Class, ClassId) :-
+	classAtoms(ClassAtoms),
+	nth(ClassId, ClassAtoms, Class).
+	
+	
 % selectVars (+ListOfFLR, -ListOfVars)
 % ------------------------------------
 selectAllVars([], _).
