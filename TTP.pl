@@ -111,8 +111,6 @@ meyer :-
 		], _).
 
 
-% added comment...
-
 % test (-Stundenplan)
 % -------------------
 test(X) :-
