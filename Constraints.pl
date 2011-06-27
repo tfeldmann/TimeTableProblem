@@ -10,19 +10,26 @@
 constrainGrid(Grid) :-
 
 	% A room can be empty or have a course in it
-	voidVoidVoidConstraint(Grid),!,
+	write(':: A room can be empty or have a course in it'),nl,
+	voidVoidVoidConstraint(Grid),
 	
 	% teachers can only teach certain courses and courses can only be taught in certain rooms
-	roomAndTeacherForCourse(Grid),!,
+	write(':: teachers can only teach certain courses and courses can only be taught in certain rooms'),nl,
+	roomAndTeacherForCourse(Grid),
 	
 	% A class has to spend a certain amount of hours on each course
-	timeForCourse(Grid),!,
+	write(':: A class has to spend a certain amount of hours on each course'),nl,
+	timeForCourse(Grid),
 	
 	% rooms can be closed at certain times
-	closedRooms(Grid),!,
+	write(':: rooms can be closed at certain times'),nl,
+	closedRooms(Grid),
    
    	% Classes cannot share rooms and teachers
-	dontShareRoomsAndTeachers(Grid).
+	write(':: Classes cannot share rooms and teachers'),nl,
+	dontShareRoomsAndTeachers(Grid),
+	
+	nl.
    
 
 
