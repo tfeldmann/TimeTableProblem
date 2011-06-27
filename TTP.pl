@@ -54,6 +54,53 @@ ttp(TTP, Stundenplan) :-
 	scheduleEntries(Grid, ClassAtoms, DayAtoms, HourAtoms, CourseAtoms, TeacherAtoms, RoomAtoms, Stundenplan).
 
 
+% Musterproblem
+% -------------
+meyer :-
+	ttp(
+		[
+		tage([montag,dienstag,mittwoch,donnerstag,freitag]),
+		stunden([vielzufrueh,zufrueh,frueh,vormittags,mittags,spaet]),
+		curriculum(klasse1,[deutsch,5,mathe,5,sachkunde,2,sport,2,schwimmen,2,musik,2,kunst,2,religion,2,englisch,1,informatik,2]),
+		curriculum(klasse2,[deutsch,6,mathe,5,sachkunde,2,sport,2,schwimmen,2,musik,1,kunst,2,religion,2,englisch,2,informatik,2]),
+		curriculum(klasse3,[deutsch,5,mathe,5,sachkunde,4,sport,2,schwimmen,2,musik,1,kunst,2,religion,2,englisch,2,informatik,4]),
+		fachraum(kunst,[kunstraum]),
+		fachraum(musik,[musikraum]),
+		fachraum(sport,[sporthalle]),
+		fachraum(schwimmen,[schwimmhalle]),
+		fachraum(deutsch,[raum1,raum2,raum3]),
+		fachraum(englisch,[raum1,raum2,raum3]),
+		fachraum(mathe,[raum1,raum2,raum3]),
+		fachraum(religion,[raum1,raum2,raum3]),
+		fachraum(sachkunde,[labor]),
+		fachraum(informatik,[pcraum]),
+		fachlehrer(kunst,[schulze]),
+		fachlehrer(musik,[schulze]),
+		fachlehrer(deutsch,[mueller]),
+		fachlehrer(religion,[mueller]),
+		fachlehrer(sport,[schmidt]),
+		fachlehrer(schwimmen,[schmidt]),
+		fachlehrer(englisch,[meyer]),
+		fachlehrer(informatik,[meyer]),
+		fachlehrer(mathe,[schneider]),
+		fachlehrer(sachkunde,[schneider]),
+		doppelstunden([sport,schwimmen,kunst])
+/* TODO:
+		Außerdem:
+		Herr Müller kann nur Montags bis Donnerstags,
+		die Schwimmhalle steht nur Dienstags zur Verfügung,
+		Herr Schmidt kann nur Montags und Dienstags,
+		Frau Schulze kann nur Donnerstags und Freitags,
+		Herr Meyer kann nur Mittwochs bis Freitags
+		... war zu bequem, das alles als lehrersperre bzw. raumsperre zu formulieren ;-)
+		
+		Dafür braucht aber die Regel des Ministeriums (letzte/erste Stunde) nicht eingehalten werden!
+*/
+		]).
+
+
+
+
 % test (-Stundenplan)
 % -------------------
 test(X) :-
