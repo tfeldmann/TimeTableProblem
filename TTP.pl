@@ -132,7 +132,7 @@ test(X) :-
 
 		curriculum('Klasse 1', ['Mathe', 2, 'Informatik', 1, 'Musik', 2, 'Deutsch', 1, 'Sport', 1]),
 		curriculum('Klasse 2', ['Mathe', 2, 'Informatik', 1, 'Musik', 1, 'Deutsch', 1]),
-		curriculum('Klasse 3', ['Mathe', 2]),
+%		curriculum('Klasse 3', ['Mathe', 2]),
 		
 		raumsperre('Musiksaal', ['Dienstag', 'von 8 bis 9']),
 		raumsperre('Raum 2', ['Dienstag', 'von 9 bis 10']),
