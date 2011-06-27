@@ -114,9 +114,8 @@ roomForCourse([flr(F, _, R) | RestOfFLR]) :-
 	roomForCourse(RestOfFLR).
 	
 
-% rooms is closed at certain times
-% --------------------------------
-
+% room is closed at Day:Hour
+% --------------------------
 closedRooms(Grid) :-
 	findall([Room, Day, Hour], roomClosed(Room, Day, Hour), ClosedRoomsList),
 	closedRooms(Grid, ClosedRoomsList).
