@@ -128,7 +128,7 @@ test(X) :-
 		fachraum('Informatik', ['PC-Pool', 'Raum 2']),
 		fachraum('Musik', ['Musiksaal']),
 		fachraum('Deutsch', ['Raum 1', 'Raum 2', 'Raum 3']),
-		fachraum('Sport', ['Sporthalle']),
+        fachraum('Sport', ['Sporthalle']),
 
 		fachlehrer('Informatik', ['Just', 'Meyer']),
 		fachlehrer('Mathe', ['Wollhöver', 'Petrias']),
