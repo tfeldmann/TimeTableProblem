@@ -50,6 +50,37 @@ listOfR([flr(_, _, R) | RestOfFLR], ListOfR) :-
 	append(RestListOfR, [R], ListOfR).
 	
 	
+% selectVars (+ListOfFLR, -ListOfVars)
+% ------------------------------------
+selectAllVars([], _).
+selectAllVars([flr(F,L,R) | RestOfFLR], ListOfVars) :-
+	selectAllVars(RestOfFLR, RestOfListOfVars), !,
+	append(RestOfListOfVars, [F,L,R], ListOfVars).
+	
+
+% listOfVarPairs (+ListOfVars, -ListOfVarPairs)
+%
+% ListOfVarPairs represents a list of all possible pairs (without
+% duplicates) that can be combined using the variables in ListOfVars
+% ------------------------------------------------------------------
+listOfVarPairs([], _).
+listOfVarPairs([Var | RestOfVars], ListOfPairs) :-
+	pairsForVar(Var, RestOfVars, ListOfPairsForVar), !,
+	listOfVarPairs(RestOfVars, RestListOfPairs), !,
+	append(RestListOfPairs, ListOfPairsForVar, ListOfPairs), !.
+
+
+% pairsForVar (+Var, +OtherVariables, -Pairs)
+% -------------------------------------------
+pairsForVar(_, [], _).
+pairsForVar(Var, [Partner | RestOfPartners], ListOfPairs) :-
+	pairsForVar(Var, RestOfPartners, RestListOfPairs), !,
+	append(RestListOfPairs, [[Var, Partner]], ListOfPairs).
+	
+/*
+ *      Translations
+ */
+
 % translateCourse (+ListOfCourse, -ListOfCourseIds)
 % translateCourse (+Course, -CourseId)
 % -------------------------------------------------
@@ -77,7 +108,7 @@ translateTeacher(Teacher, TeacherId) :-
 	teacherAtoms(TeacherAtoms),
 	nth(TeacherId, TeacherAtoms, Teacher).	
 
-	
+
 % translateRoom (+ListOfRoom, -ListOfRoomIds)
 % translateRoom (+Room, -RoomId)
 % -------------------------------------------------
@@ -90,8 +121,8 @@ translateRoom([Room | RestOfRooms], ListOfRoomIds) :-
 translateRoom(Room, RoomId) :-
 	roomAtoms(RoomAtoms),
 	nth(RoomId, RoomAtoms, Room).
-	
-	
+
+
 % translateClass (+ListOfClass, -ListOfClassIds)
 % translateClass (+Class, -ClassId)
 % -------------------------------------------------
@@ -104,31 +135,3 @@ translateClass([Class | RestOfClasss], ListOfClassIds) :-
 translateClass(Class, ClassId) :-
 	classAtoms(ClassAtoms),
 	nth(ClassId, ClassAtoms, Class).
-	
-	
-% selectVars (+ListOfFLR, -ListOfVars)
-% ------------------------------------
-selectAllVars([], _).
-selectAllVars([flr(F,L,R) | RestOfFLR], ListOfVars) :-
-	selectAllVars(RestOfFLR, RestOfListOfVars), !,
-	append(RestOfListOfVars, [F,L,R], ListOfVars).
-	
-
-% listOfVarPairs (+ListOfVars, -ListOfVarPairs)
-%
-% ListOfVarPairs represents a list of all possible pairs (without
-% duplicates) that can be combined using the variables in ListOfVars
-% ------------------------------------------------------------------
-listOfVarPairs([], _).
-listOfVarPairs([Var | RestOfVars], ListOfPairs) :-
-	pairsForVar(Var, RestOfVars, ListOfPairsForVar), !,
-	listOfVarPairs(RestOfVars, RestListOfPairs), !,
-	append(RestListOfPairs, ListOfPairsForVar, ListOfPairs), !.
-
-
-% pairsForVar (+Var, +OtherVariables, -Pairs)
-% -------------------------------------------
-pairsForVar(_, [], _).
-pairsForVar(Var, [Partner | RestOfPartners], ListOfPairs) :-
-	pairsForVar(Var, RestOfPartners, RestListOfPairs), !,
-	append(RestListOfPairs, [[Var, Partner]], ListOfPairs).
