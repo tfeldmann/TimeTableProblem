@@ -1,8 +1,5 @@
 /*
 	Constraints.pl
-
-	FIXME: Fach ohne Raumeinschränkungen: Kann in jedem Raum stattfinden
-	
 */
 
 % constrainGrid (+Grid)
@@ -58,7 +55,6 @@ voidVoidVoidConstraint_loop([flr(F, L, R) | RestOfFLR]) :-
 	
 % Classes cannot share rooms and teachers
 % ---------------------------------------
-% FIXME: Noch hardgecodet für zwei klassen.
 dontShareRoomsAndTeachers(Grid) :-
 	findall(
 		[DayId, HourId],
@@ -142,7 +138,6 @@ closedRooms(Grid) :-
 
 closedRooms(_, []).
 closedRooms(Grid, [[Room, Day, Hour] | RestOfClosedRooms]) :-
-% FIXME: 2 Klassen hardcoding flexibel machen
 	selectSingleFLR(Grid, 1, Day, Hour, flr(_, _, R1)),
 	selectSingleFLR(Grid, 2, Day, Hour, flr(_, _, R2)),
 	R1 #\= Room,
@@ -158,7 +153,6 @@ teacherLocks(Grid) :-
 
 teacherLocks(_, []).
 teacherLocks(Grid, [[Teacher, Day, Hour] | RestOfLockedTeacherList]) :-
-% FIXME: 2 Klassen hardcoding flexibel machen
 	selectSingleFLR(Grid, 1, Day, Hour, flr(_, L1, _)),
 	selectSingleFLR(Grid, 2, Day, Hour, flr(_, L2, _)),
 	L1 #\= Teacher,
