@@ -144,6 +144,5 @@ test(X) :-
 		
 		lehrersperre('Tewes', ['Dienstag', 'von 8 bis 9'])
 		
-		% TODO: Doppelstunden implementieren
 %		doppelstunden(['Sport', 'Informatik'])
 		], X).
